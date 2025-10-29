@@ -1,0 +1,3 @@
+[submodule "models-web-app/models-web-app"]
+	path = models-web-app/models-web-app
+	url = git@github.com:kserve/models-web-app.git
