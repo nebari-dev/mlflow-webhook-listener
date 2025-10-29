@@ -1,0 +1,20 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kserve-models-web-app-ingressroute
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`nebari.openteams.ai`) && PathPrefix(`/models`)
+    middlewares:
+    - name: kserve-models-web-app-forward-auth
+      namespace: prod
+    - name: kserve-models-web-app-add-slash
+      namespace: prod
+    - name: kserve-models-web-app-stripprefix
+      namespace: prod
+    services:
+    - name: kserve-models-web-app
+      port: 80

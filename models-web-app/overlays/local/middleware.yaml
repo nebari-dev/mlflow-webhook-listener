@@ -1,0 +1,30 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: kserve-models-web-app-forward-auth
+spec:
+  forwardAuth:
+    address: http://forwardauth-service.prod.svc.cluster.local:4181
+    authResponseHeaders:
+    - X-Forwarded-User
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: kserve-models-web-app-add-slash
+spec:
+  redirectRegex:
+    permanent: true
+    regex: ^https://nebari.openteams.ai/models$
+    replacement: https://nebari.openteams.ai/models/
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: kserve-models-web-app-stripprefix
+spec:
+  stripPrefix:
+    forceSlash: false
+    prefixes:
+    - /models/
